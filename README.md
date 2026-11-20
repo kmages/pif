@@ -47,7 +47,7 @@ npm test
 - **AI screening.** The screen is a keyword list. The plan calls for an AI screen plus human review.
 - **Verified givers** and the limit of one good word per giver per worker per month.
 - Shop routing, QR and NFC printing, the monthly digest, awards and sponsor pools (Weeks 3 to 12).
-- Hosting. Nothing is deployed.
+- A real domain. It runs on a nip.io address for now. See `deploy/README.md`.
 
 ## Layout
 

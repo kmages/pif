@@ -1,0 +1,16 @@
+[Unit]
+Description=Pay It Forward (good word prototype)
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ken/pif
+EnvironmentFile=/etc/pif.env
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=5
+User=ken
+MemoryMax=200M
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
