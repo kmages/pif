@@ -127,7 +127,7 @@ test('order a greeting: script, review, approval, delivery', async () => {
     assert.match(page.text, /Hello Dana\. Sam Rivera asked me to record a message just for you/);
     assert.match(page.text, /You have not missed a delivery date since March\. None of that happens by luck/);
     assert.match(page.text, /Demo: no card is taken\./);
-    assert.match(page.text, /\$49/);
+    assert.match(page.text, /\$14\.99/);
     assert.match(page.text, /say the name as "DAY-nuh"/);
     assert.doesNotMatch(page.text, /name="(card|cc|cvc|cvv|number|expiry)/i);
     // An unsent order has no status page yet.
