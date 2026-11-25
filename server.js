@@ -6,6 +6,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { openDb } from './lib/db.js';
 import { screenText } from './lib/screen.js';
 import * as view from './lib/views.js';
+import { createDemo } from './lib/demo.js';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const DAY = 86_400_000;
@@ -53,6 +54,7 @@ function readForm(req, limit = 16_384) {
 export function createApp(opts = {}) {
   const db = openDb(opts.dbPath ?? process.env.PIF_DB ?? path.join(ROOT, 'data', 'pif.db'));
   const adminKey = opts.adminKey ?? process.env.PIF_ADMIN_KEY ?? '';
+  const demoKey = opts.demoKey ?? process.env.PIF_DEMO_KEY ?? '';
   const baseUrl = (opts.baseUrl ?? process.env.PIF_BASE_URL ?? '').replace(/\/$/, '');
   const trustProxy = opts.trustProxy ?? process.env.PIF_TRUST_PROXY === '1';
   const now = opts.now ?? (() => Date.now());
@@ -118,6 +120,8 @@ export function createApp(opts = {}) {
     return timingSafeEqual(a, b);
   }
 
+  const demo = createDemo({ db, demoKey, now, limited, token, sha, clean, readForm });
+
   async function handle(req, res) {
     const url = new URL(req.url, 'http://x');
     const p = url.pathname;
@@ -159,6 +163,11 @@ export function createApp(opts = {}) {
     }
     if (get && p === '/healthz') return send(200, 'ok', 'text/plain');
     if (get && p === '/') return send(200, view.home({ person }));
+
+    // --- Greeting demo: private, behind PIF_DEMO_KEY ---
+    if (p === '/demo' || p.startsWith('/demo/')) {
+      return demo({ req, url, p, method, get, cookies, cookie, send, redirect, notFound, origin, ip });
+    }
 
     // --- Give ---
     if (get && p === '/give') {

@@ -45,6 +45,16 @@
     });
   }
 
+  // Demo script page: keep the read-aloud time in step with the text.
+  const script = document.querySelector('[data-count]');
+  const out = document.querySelector('[data-count-out]');
+  if (script && out) {
+    script.addEventListener('input', () => {
+      const words = script.value.trim().split(/\s+/).filter(Boolean).length;
+      out.textContent = `About ${Math.round(words / 2.5)} seconds when read aloud.`;
+    });
+  }
+
   for (const input of document.querySelectorAll('input[readonly]')) {
     input.addEventListener('focus', () => input.select());
   }
